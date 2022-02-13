@@ -1,0 +1,16 @@
+3ansible-vault encrypt inventory.txt
+4ansible all -m ping -o
+5ansible all -m ping -o --ask-vault-pass
+6vim inventory.txt
+7ansible-vault edit inventory.txt
+8ansible ungrouped -m ping -o --ask-vault-pass
+9ansible-vault decrypt inventory.txt
+10echo "Pl123456" > pass.txt
+11ansible-vault encrypt inventory.txt
+12ansible all -m ping -o
+13ansible all -m ping -o --vault-password-file ./pass.txt
+14aws --region=us-east-1 ssm get-parameters --names "vault_passwd" --query "Parameters[*].{Value:Value}" --output text
+15ll
+16chmod +x vault_passwd.sh
+17ansible all -m ping -o --vault-password-file ./vault_passwd.sh
+18bash ./vault_passwd.sh
